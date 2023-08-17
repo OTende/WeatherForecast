@@ -35,11 +35,11 @@ class MainActivity : AppCompatActivity() {
         val auto = findViewById<AutoCompleteTextView>(R.id.autotextview)
 
         viewModel.asd.observe(this) {
-            auto.hint = it.toString()
+            auto.hint = it.data.toString()
         }
 
         findViewById<TextView>(R.id.for_view_model).setOnClickListener {
-            viewModel.completePractice()
+            viewModel.loadWeather()
         }
 //        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, cityList)
 //        auto.setAdapter(adapter)
