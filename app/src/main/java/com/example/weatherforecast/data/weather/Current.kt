@@ -1,4 +1,4 @@
-package com.example.weatherforecast.domain.weather
+package com.example.weatherforecast.data.weather
 
 data class Current(
     val condition: Condition,

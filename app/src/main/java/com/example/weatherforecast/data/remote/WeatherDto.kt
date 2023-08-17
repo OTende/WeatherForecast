@@ -1,7 +1,7 @@
 package com.example.weatherforecast.data.remote
 
-import com.example.weatherforecast.domain.weather.Current
-import com.example.weatherforecast.domain.weather.ForecastWeather
+import com.example.weatherforecast.data.weather.Current
+import com.example.weatherforecast.data.weather.ForecastWeather
 import com.google.gson.annotations.SerializedName
 
 data class WeatherDto(
