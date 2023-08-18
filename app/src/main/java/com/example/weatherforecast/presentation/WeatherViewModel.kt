@@ -18,11 +18,24 @@ class WeatherViewModel @Inject constructor(
     private val repository: WeatherRepository,
     private val apiKeyProvider: ApiKeyProviderImpl,
 ) : ViewModel() {
+    private var _state: MutableLiveData<WeatherState> = MutableLiveData(WeatherState())
+    val state: LiveData<WeatherState> = _state
 
-    val asd: MutableLiveData<Resource<WeatherDto>> = MutableLiveData()
     fun loadWeather() {
         viewModelScope.launch {
-            asd.value = repository.getWeatherData("Moscow", 5, apiKeyProvider.getApiKey())
+            val result = repository.getWeatherData("Moscow", 5, apiKeyProvider.getApiKey())
+            val value = when (result) {
+                is Resource.Success -> _state.value?.copy(
+                    weather = result.data,
+                    isLoading = false
+                )
+                is Resource.Error -> _state.value?.copy(
+                    weather = null,
+                    isLoading = false,
+                    error = result.message
+                )
+            }
+            _state.postValue(value)
         }
     }
 }

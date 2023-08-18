@@ -6,23 +6,65 @@
     android:layout_height="match_parent"
     tools:context=".presentation.MainActivity">
 
-    <AutoCompleteTextView
-        android:id="@+id/autotextview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="city name"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
     <TextView
-        android:id="@+id/for_view_model"
+        android:id="@+id/city_name_text_view"
+        style="@style/Base.Theme.AppCompat.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Insert city name" />
+
+    <AutoCompleteTextView
+        android:id="@+id/city_name_edit_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/city_name"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/edit_city_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/edit_city_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/edit_city"
+        android:src="@drawable/baseline_edit_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/current_condition"
+        android:layout_width="wrap_content"
+        style="@style/Base.Theme.AppCompat.Header"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/city_name_text_view"
+        tools:text="Today's condition" />
+
+    <TextView
+        android:id="@+id/current_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Base.Theme.AppCompat.Header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/current_condition"
+        tools:text="21C°" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/weather_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/current_condition"
+        tools:src="@drawable/baseline_edit_24" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/weather_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/current_temperature" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

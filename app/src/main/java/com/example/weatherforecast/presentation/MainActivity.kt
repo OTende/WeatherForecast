@@ -8,8 +8,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weatherforecast.R
+import com.example.weatherforecast.adapters.WeatherAdapter
 import com.example.weatherforecast.data.remote.WeatherApi
+import com.example.weatherforecast.data.weather.Condition
+import com.example.weatherforecast.data.weather.Day
+import com.example.weatherforecast.data.weather.ForecastDay
+import com.example.weatherforecast.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,21 +33,27 @@ class MainActivity : AppCompatActivity() {
     lateinit var api: WeatherApi
 
     private val viewModel: WeatherViewModel by viewModels()
-
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val auto = findViewById<AutoCompleteTextView>(R.id.autotextview)
-
-        viewModel.asd.observe(this) {
-            auto.hint = it.data.toString()
+        viewModel.loadWeather()
+        viewModel.state.observe(this) { state ->
+            if (!state.isLoading)
+            with(binding) {
+                state.weather?.let {
+                    currentCondition.text = it.currentWeather.condition.text
+                    currentTemperature.text = getString(
+                        R.string.temperature,
+                        it.forecastWeather.forecastDay[0].forecast.avgTemp.toString()
+                    )
+                    val adapter = WeatherAdapter(it.forecastWeather.forecastDay)
+                    binding.weatherList.layoutManager = LinearLayoutManager(this@MainActivity)
+                    binding.weatherList.adapter = adapter
+                }
+            }
         }
-
-        findViewById<TextView>(R.id.for_view_model).setOnClickListener {
-            viewModel.loadWeather()
-        }
-//        val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, cityList)
-//        auto.setAdapter(adapter)
     }
 }
