@@ -4,4 +4,5 @@
     <string name="city_name">Город</string>
     <string name="edit_city">Change the current city name</string>
     <string name="temperature">%1$s °</string>
+    <string name="insert_city_name">Введите название города</string>
 </resources>

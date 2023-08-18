@@ -14,7 +14,6 @@ class WeatherAdapter(private val list: List<ForecastDay>) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ForecastDay) {
             with(binding) {
-                date.text = item.date
                 condition.text = item.forecast.condition.text
                 humidity.text = item.forecast.avgHumidity.toString()
                 temperature.text = String.format("%s°", item.forecast.avgTemp.toString())
@@ -26,6 +25,8 @@ class WeatherAdapter(private val list: List<ForecastDay>) :
                     .load("https://" + item.forecast.condition.icon.substring(2))
                     .into(conditionImageView)
                 windSpeed.text = String.format("%s км/ч", item.forecast.maxWind.toString())
+                val dateList = item.date.split("-")
+                date.text = String.format("%s.%s", dateList[2], dateList[1])
             }
         }
     }

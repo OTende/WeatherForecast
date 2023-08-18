@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Insert city name" />
+        android:text="@string/insert_city_name" />
 
     <AutoCompleteTextView
         android:id="@+id/city_name_edit_text"
@@ -22,16 +22,16 @@
         android:layout_height="wrap_content"
         android:hint="@string/city_name"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@id/edit_city_name"
+        app:layout_constraintEnd_toStartOf="@id/edit_city_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/edit_city_name"
+        android:id="@+id/edit_city_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/edit_city"
-        android:src="@drawable/baseline_edit_24"
+        android:background="@drawable/baseline_edit_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

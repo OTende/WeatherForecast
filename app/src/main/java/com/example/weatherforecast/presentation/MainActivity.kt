@@ -1,12 +1,15 @@
 package com.example.weatherforecast.presentation
 
+import android.content.Context
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -23,10 +26,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import retrofit2.Retrofit
 import javax.inject.Inject
+
+const val CITY_NAME = "City name"
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -35,12 +41,32 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: WeatherViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
+    private val sharedPreferences get()= getPreferences(Context.MODE_PRIVATE)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val cityName = sharedPreferences.getString(CITY_NAME, "")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupCityEditing()
 
-        viewModel.loadWeather()
+        if (!cityName.isNullOrEmpty()) {
+            viewModel.loadWeather(cityName)
+            binding.cityNameTextView.text = cityName
+        }
+
+        viewModel.citiesList.observe(this) {
+            val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, it.map { it.name })
+            binding.cityNameEditText.setAdapter(adapter)
+        }
+
+        binding.cityNameEditText.addTextChangedListener {
+            val text = it.toString()
+            if (text.length > 2)
+                viewModel.updateCitiesList(it.toString())
+        }
+
         viewModel.state.observe(this) { state ->
             if (!state.isLoading)
                 with(binding) {
@@ -62,6 +88,24 @@ class MainActivity : AppCompatActivity() {
                         binding.weatherList.adapter = adapter
                     }
                 }
+        }
+    }
+
+    private fun setupCityEditing() {
+        binding.editCityButton.setOnClickListener {
+            if (binding.cityNameEditText.visibility == View.GONE) {
+                binding.cityNameEditText.visibility = View.VISIBLE
+                binding.cityNameTextView.visibility = View.INVISIBLE
+                it.setBackgroundResource(R.drawable.baseline_check_24)
+            } else {
+                val city = binding.cityNameEditText.text.toString()
+                sharedPreferences.edit().putString(CITY_NAME, city).apply()
+                binding.cityNameEditText.visibility = View.GONE
+                binding.cityNameTextView.text = city
+                binding.cityNameTextView.visibility = View.VISIBLE
+                viewModel.loadWeather(city)
+                it.setBackgroundResource(R.drawable.baseline_edit_24)
+            }
         }
     }
 }
