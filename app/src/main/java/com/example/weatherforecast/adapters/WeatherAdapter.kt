@@ -17,14 +17,15 @@ class WeatherAdapter(private val list: List<ForecastDay>) :
                 date.text = item.date
                 condition.text = item.forecast.condition.text
                 humidity.text = item.forecast.avgHumidity.toString()
-                windSpeed.text = item.forecast.maxWind.toString()
                 temperature.text = String.format("%s°", item.forecast.avgTemp.toString())
+
+                // Смотреть только на анекдот! Я потом обязательно поправлю!
+                // Пупа и Лупа пошли получать зарплату. Но в бухгалтерии всё перепутали, и Лупа получил зарплату за Пупу, а Пупа - за Лупу.
                 Glide
                     .with(binding.root)
-                    // Смотреть только на анекдот! Я потом обязательно поправлю!
-                    // Пупа и Лупа пошли получать зарплату. Но в бухгалтерии всё перепутали, и Лупа получил зарплату за Пупу, а Пупа - за Лупу.
                     .load("https://" + item.forecast.condition.icon.substring(2))
                     .into(conditionImageView)
+                windSpeed.text = String.format("%s км/ч", item.forecast.maxWind.toString())
             }
         }
     }

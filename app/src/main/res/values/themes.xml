@@ -10,6 +10,17 @@
         <item name="android:layout_margin">4dp</item>
     </style>
 
+    <style name="Base.Theme.AppCompat.CurrentWeather.Text" parent="Base.Theme.AppCompat.Text">
+        <item name="android:textSize">40sp</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
+    <style name="Base.Theme.AppCompat.CurrentWeather.Header" parent="Base.Theme.AppCompat.CurrentWeather.Text">
+        <item name="android:textSize">40sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
     <style name="Base.Theme.AppCompat.Header" parent="Base.Theme.AppCompat.Text">
         <item name="android:textSize">20sp</item>
         <item name="android:textStyle">bold</item>

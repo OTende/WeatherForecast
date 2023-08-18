@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.weatherforecast.R
 import com.example.weatherforecast.adapters.WeatherAdapter
 import com.example.weatherforecast.data.remote.WeatherApi
@@ -42,18 +43,25 @@ class MainActivity : AppCompatActivity() {
         viewModel.loadWeather()
         viewModel.state.observe(this) { state ->
             if (!state.isLoading)
-            with(binding) {
-                state.weather?.let {
-                    currentCondition.text = it.currentWeather.condition.text
-                    currentTemperature.text = getString(
-                        R.string.temperature,
-                        it.forecastWeather.forecastDay[0].forecast.avgTemp.toString()
-                    )
-                    val adapter = WeatherAdapter(it.forecastWeather.forecastDay)
-                    binding.weatherList.layoutManager = LinearLayoutManager(this@MainActivity)
-                    binding.weatherList.adapter = adapter
+                with(binding) {
+                    state.weather?.let {
+                        currentCondition.text = it.currentWeather.condition.text
+                        currentTemperature.text = getString(
+                            R.string.temperature,
+                            it.forecastWeather.forecastDay[0].forecast.avgTemp.toString()
+                        )
+                        
+                        // Смотреть только на анекдот! Я потом обязательно поправлю!
+                        // Пупа и Лупа пошли получать зарплату. Но в бухгалтерии всё перепутали, и Лупа получил зарплату за Пупу, а Пупа - за Лупу.
+                        Glide.with(this@MainActivity)
+                            .load("https://" + it.currentWeather.condition.icon.substring(2))
+                            .into(binding.todayIcon)
+
+                        val adapter = WeatherAdapter(it.forecastWeather.forecastDay)
+                        binding.weatherList.layoutManager = LinearLayoutManager(this@MainActivity)
+                        binding.weatherList.adapter = adapter
+                    }
                 }
-            }
         }
     }
 }
